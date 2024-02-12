@@ -28,10 +28,9 @@ object LocalModule {
             return AppDatabase.getAppDb(context) as AppDatabase
         }
 
-        @Singleton
-        @Provides
-        fun getDao(appDB: AppDatabase): AppDao {
-            return appDB.getDAO()
-        }
-
 }
+
+/*
+ * Add dao
+ */
+

@@ -15,7 +15,7 @@ interface AppDao {
     /**
      * Select Query task_table
      */
-    @Query("SELECT * FROM Task_table ORDER BY priority DESC")
+    @Query("")
     fun getTask(): MutableList<Task>
 
     /**
@@ -44,3 +44,8 @@ interface AppDao {
     fun updateTask(task: Task)
 
 }
+
+
+/*
+ * Add query
+ */

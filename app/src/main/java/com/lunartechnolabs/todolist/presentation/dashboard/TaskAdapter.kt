@@ -10,70 +10,8 @@ import com.lunartechnolabs.todolist.databinding.SingleTaskBinding
 import com.lunartechnolabs.todolist.domain.model.Task
 
 
-class TaskAdapter(private val listener: OnItemClickListener) : RecyclerView.Adapter<MainViewHolder>() {
+class TaskAdapter() {}
 
-    private  var taskList: ArrayList<Task> = ArrayList()
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = SingleTaskBinding.inflate(inflater, parent, false)
-        return MainViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
-        val task = taskList[position]
-
-        when (task.priority) {
-            "Urgent" -> {
-                holder.binding.priorityBar.setBackgroundColor(Color.RED)
-            }
-            "Medium" -> {
-                holder.binding.priorityBar.setBackgroundColor(Color.GREEN)
-            }
-            else -> {
-                holder.binding.priorityBar.setBackgroundColor(Color.BLACK)
-            }
-        }
-
-        holder.binding.title.text = task.title
-
-        holder.itemView.setOnClickListener {
-            listener.itemClick(it, position, task)
-            notifyDataSetChanged()
-        }
-
-        holder.itemView.setOnLongClickListener {
-            listener.itemClickLong(it, position, task)
-            false
-        }
-
-        holder.binding.checkbox.setOnClickListener{
-            if(taskList.isNotEmpty() && taskList.size > position) {
-                taskList.removeAt(position)
-                notifyItemRemoved(position)
-            }
-            if(taskList.size == 0){
-                taskList.clear()
-            }
-            listener.btnClick(it,position,task)
-            notifyDataSetChanged()
-        }
-    }
-
-    override fun getItemCount(): Int {
-        return taskList.size
-    }
-
-    interface OnItemClickListener {
-        fun itemClick(view: View, position: Int, task: Task)
-        fun btnClick(view: View, position: Int, task: Task)
-        fun itemClickLong(view: View, position: Int, task: Task)
-    }
-
-
-    fun setData(taskModel: ArrayList<Task>) {
-        taskList = taskModel
-    }
-
-}
-class MainViewHolder(var binding: SingleTaskBinding) : RecyclerView.ViewHolder(binding.root)
+/*
+ * Complete Adapter
+ */

@@ -22,12 +22,11 @@ import kotlin.collections.ArrayList
  * Hilt view model will create entry point for Fragment
  */
 @AndroidEntryPoint
-class DashBoardFragment : Fragment() , TaskAdapter.OnItemClickListener{
+class DashBoardFragment : Fragment() {
 
-    private  var _binding: FragmentDashBoardBinding?= null
+    private var _binding: FragmentDashBoardBinding? = null
     private val binding get() = _binding!!
-    private lateinit var taskAdapter: TaskAdapter
-    private val viewModel : DashBoardViewModel by viewModels()
+    private val viewModel: DashBoardViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,79 +36,25 @@ class DashBoardFragment : Fragment() , TaskAdapter.OnItemClickListener{
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentDashBoardBinding.inflate(inflater,container,false)
+        _binding = FragmentDashBoardBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel.fetchOfflineArticle()
-        //initialize RecyclerView
-        iniRecyclerview()
-        //initialize observers
-        bindObserver()
-
-
         //Floating button code
         binding.floatingActionButton.setOnClickListener {
             val task = Task(title = "", priority = "", detail = "", taskDate = "", taskTime = "")
-            val action = DashBoardFragmentDirections.actionDashBoardFragmentToEditOrAddFragment(task,false)
+            val action =
+                DashBoardFragmentDirections.actionDashBoardFragmentToEditOrAddFragment(task, false)
             findNavController().navigate(action)
         }
-        super.onViewCreated(view, savedInstanceState)
-    }
-
-    //Recyclerview init function
-    private fun iniRecyclerview() {
-        taskAdapter = TaskAdapter(this@DashBoardFragment)
-        binding.articleRcv.layoutManager = LinearLayoutManager(requireActivity())
-        binding.articleRcv.adapter = taskAdapter
-    }
-
-    //oberser init function
-    private fun bindObserver() {
-        lifecycleScope.launchWhenCreated {
-            //collect data from ViewModel
-            viewModel.offlineArticleUIState.collectLatest {
-                when (it) {
-                    is Resource.Success -> {
-                        it.data?.let {
-                        taskAdapter.setData(it as ArrayList<Task>)
-                        }
-                    }
-                        is Resource.Error -> {
-                        }
-                        is Resource.Loading -> {
-                        }
-                    }
-
-                }
-
-           }
-
     }
 
     override fun onDestroy() {
         _binding = null
         super.onDestroy()
-    }
-
-    //Click handle
-    //1.item click
-    override fun itemClick(view: View, position: Int, task: Task) {
-        //open update fragment
-        openUpdateFragment(task)
-    }
-
-    //2. Button click
-    override fun btnClick(view: View, position: Int, task: Task) {
-        //delete article
-        viewModel.deleteArticle(task)
-        taskAdapter.notifyItemRemoved(position)
-    }
-
-    //3. Long button pressed
-    override fun itemClickLong(view: View, position: Int, task: Task) {
-        openViewFragment(task)
     }
 
     //open view fragment
@@ -120,7 +65,12 @@ class DashBoardFragment : Fragment() , TaskAdapter.OnItemClickListener{
 
     //open update Fragment
     private fun openUpdateFragment(task: Task) {
-        val action = DashBoardFragmentDirections.actionDashBoardFragmentToEditOrAddFragment(task,true)
+        val action =
+            DashBoardFragmentDirections.actionDashBoardFragmentToEditOrAddFragment(task, true)
         findNavController().navigate(action)
     }
 }
+
+/*
+ * Add adapter
+ */

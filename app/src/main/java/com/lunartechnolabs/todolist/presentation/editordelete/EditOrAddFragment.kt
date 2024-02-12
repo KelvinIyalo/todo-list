@@ -52,67 +52,14 @@ class EditOrAddFragment : Fragment() {
         }
     }
 
-    //Update task
-    private fun updateTask() {
-        binding.addArticleBtn.text = "Update Task"
-            binding.apply {
-                args.taskData.let {
-                    edtTitle.setText(it.title)
-                    edtBody.setText(it.detail)
-                    edtTime.setText(it.taskTime)
-                    edtDate.setText(it.taskDate)
-
-                    when (it.priority) {
-                        "Urgent" -> {
-                            radioButton3.isChecked = true
-                        }
-                        "Medium" -> {
-                            radioButton2.isChecked = true
-                        }
-                        else -> {
-                            radioButton1.isChecked = true
-                        }
-                    }
-                }
-
-            }
-        binding.addArticleBtn.setOnClickListener {
-        if (validation()) {
-            val selectedOption: Int = binding.radioGroup.checkedRadioButtonId
-            radioButton = view?.findViewById(selectedOption)!!
-                val task = Task(
-                    id = args.taskData.id,
-                    title = binding.edtTitle.text.toString(),
-                    detail = binding.edtBody.text.toString(),
-                    priority = radioButton.text.toString(),
-                    taskDate = binding.edtDate.text.toString(),
-                    taskTime = binding.edtTime.text.toString()
-                )
-                viewModel.updateArticle(task)
-                findNavController().popBackStack()
-            }
-        }
-    }
-
     //Add task
     private fun addTask() {
-        binding.addArticleBtn.setOnClickListener {
+        TODO("Not yet implemented")
+    }
 
-            if (validation()) {
-                val selectedOption: Int = binding.radioGroup.checkedRadioButtonId
-
-                radioButton = view?.findViewById(selectedOption)!!
-                val task = Task(
-                    title = binding.edtTitle.text.toString(),
-                    detail = binding.edtBody.text.toString(),
-                    priority = radioButton.text.toString(),
-                    taskDate = binding.edtDate.text.toString(),
-                    taskTime = binding.edtTime.text.toString()
-                )
-                viewModel.addArticle(task)
-                findNavController().popBackStack()
-            }
-        }
+    //Update task
+    private fun updateTask() {
+        TODO("Not yet implemented")
     }
 
     private fun validation(): Boolean {
@@ -129,5 +76,9 @@ class EditOrAddFragment : Fragment() {
         super.onDestroy()
     }
 
-
 }
+
+/*
+ * Add task
+ * Update task
+ */
