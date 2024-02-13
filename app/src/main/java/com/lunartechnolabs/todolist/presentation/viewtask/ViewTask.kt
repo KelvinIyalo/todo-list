@@ -56,7 +56,7 @@ class ViewTask : BottomSheetDialogFragment() {
                     tvPriority.text = "No Priority Selected"
                 }else{
                     when (it?.priority) {
-                        "High" -> {
+                        "Urgent" -> {
                             tvPriority.text = "Priority \n" +  it.priority
                             tvPriority.setTextColor(Color.RED)
                         }

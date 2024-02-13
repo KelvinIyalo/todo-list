@@ -15,7 +15,7 @@ interface AppDao {
     /**
      * Select Query task_table
      */
-    @Query("")
+    @Query("SELECT * from Task_table ORDER BY CASE WHEN priority = 'Urgent' THEN 'Medium' ELSE 0 END DESC, priority DESC")
     fun getTask(): MutableList<Task>
 
     /**

@@ -1,10 +1,12 @@
 package com.lunartechnolabs.todolist.util
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.ProgressDialog.show
 import android.app.TimePickerDialog
 import android.content.Context
 import android.widget.EditText
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -62,4 +64,15 @@ fun EditText.transformIntoTimePicker(context: Context, format: String, maxDate: 
             show()
         }
     }
+}
+
+fun showDialog(context: Context, message: String, onCancel: () -> Unit) {
+    val dialog = MaterialAlertDialogBuilder(context)
+        .setTitle("Alert")
+        .setMessage(message)
+        .setCancelable(false)
+        .setPositiveButton("return") { _, _ ->
+            onCancel.invoke()
+        }
+    dialog.show()
 }

@@ -24,7 +24,8 @@
         tools:layout="@layout/fragment_edit_or_add" >
         <argument
             android:name="TaskData"
-            app:argType="com.lunartechnolabs.todolist.domain.model.Task" />
+            app:argType="com.lunartechnolabs.todolist.domain.model.Task"
+            app:nullable="true" />
         <argument
             android:name="isForUpdate"
             app:argType="boolean" />

@@ -1,6 +1,7 @@
 package com.lunartechnolabs.todolist.presentation.dashboard
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.lunartechnolabs.todolist.databinding.FragmentDashBoardBinding
 import com.lunartechnolabs.todolist.domain.model.Task
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -27,7 +29,7 @@ class DashBoardFragment : Fragment() {
     private var _binding: FragmentDashBoardBinding? = null
     private val binding get() = _binding!!
     private val viewModel: DashBoardViewModel by viewModels()
-
+    private var taskAdapter: TaskAdapter? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -45,11 +47,18 @@ class DashBoardFragment : Fragment() {
         viewModel.fetchOfflineArticle()
         //Floating button code
         binding.floatingActionButton.setOnClickListener {
-            val task = Task(title = "", priority = "", detail = "", taskDate = "", taskTime = "")
             val action =
-                DashBoardFragmentDirections.actionDashBoardFragmentToEditOrAddFragment(task, false)
+                DashBoardFragmentDirections.actionDashBoardFragmentToEditOrAddFragment(null, false)
             findNavController().navigate(action)
         }
+        initializeAdapter()
+
+        lifecycleScope.launch {
+            viewModel.offlineArticleUIState.collectLatest {
+                taskAdapter?.submitList(it.data)
+            }
+        }
+
     }
 
     override fun onDestroy() {
@@ -68,6 +77,19 @@ class DashBoardFragment : Fragment() {
         val action =
             DashBoardFragmentDirections.actionDashBoardFragmentToEditOrAddFragment(task, true)
         findNavController().navigate(action)
+    }
+
+    private fun initializeAdapter() {
+        taskAdapter = TaskAdapter(
+            onItemChecked = { itemChecked ->
+                openUpdateFragment(itemChecked)
+            },
+            onItemClicked = { itemAtPosition ->
+                openViewFragment(itemAtPosition)
+            }
+        )
+
+        binding.articleRcv.adapter = taskAdapter
     }
 }
 

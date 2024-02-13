@@ -13,7 +13,6 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 
-
 /**
  * Providing LocalModule dependency for DI
  */
@@ -22,11 +21,17 @@ import javax.inject.Singleton
 @TypeConverters(Converter::class, ListConverter::class)
 object LocalModule {
 
-        @Singleton
-        @Provides
-        fun getAppDB(context: Application): AppDatabase {
-            return AppDatabase.getAppDb(context) as AppDatabase
-        }
+    @Singleton
+    @Provides
+    fun getAppDB(context: Application): AppDatabase {
+        return AppDatabase.getAppDb(context) as AppDatabase
+    }
+
+    @Singleton
+    @Provides
+    fun getDao(appDatabase: AppDatabase): AppDao {
+        return appDatabase.getDAO()
+    }
 
 }
 
